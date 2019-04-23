@@ -1,0 +1,409 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- saved from url=(0033)https://www.cariello.io/Beam.html -->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+
+    <title>Beam Calculator</title>
+    <script language="JavaScript">
+
+        {
+            var Dist;          								//Distance of throw
+            var Lamp;													//Lamp type
+            var Fixture;												//Fixture type
+            var IntensityMulti;											//Intensity Multiplier
+            var FieldMultiX;											//Field multiplier A
+            var FieldMultiY;											//Field multiplier B
+            var BeamMultiX;												//Beam multiplier A
+            var BeamMultiY;												//Beam multiplier B
+
+
+            function defaultStuff()
+            //Precondition (Pre): File is opened
+            //Postcondition (Post): Sets form defaults.
+
+            {
+                //Set Defualts
+                document.BeamForm.Fixture.selectedIndex = 0;
+                document.BeamForm.Lamp.selectedIndex = 0;
+                document.BeamForm.Dist.value = 45;
+                Dist = document.BeamForm.Dist.value;
+                Lamp = document.BeamForm.Lamp.value;
+                Fixture = document.BeamForm.Fixture.value;
+            }
+
+            function calculate()
+            //Pre: Fixture has a valid item chosen
+            //Post: Sets fixture and intensity data based on chosen fixture
+            {
+                //Call setMulti with the chosen fixure.
+                setMulti(document.BeamForm.Fixture.value);
+                //Call Intensity
+                intensity();
+                //Call Diamaters
+                fieldX();
+                fieldY();
+                beamX();
+                beamY();
+            }
+
+
+            function setMulti(Fixture)
+            //Pre: Fixture is a valid choice from form
+            //Post: Sets InsensityMulti, FieldMultiX, FieldMultiY, BeamMultiX; BeamMultiY.
+            {
+
+                switch (Fixture) {
+                    // 5 Degree ETC Source 4
+                    case "5":
+                        IntensityMulti = 1370000;
+                        FieldMultiX = 0.12;
+                        FieldMultiY = 0.12;
+                        BeamMultiX = 0.11;
+                        BeamMultiY = 0.11;
+                        break;
+
+                    // 10 Degree ETC Source 4
+                    case "10":
+                        IntensityMulti = 838000;
+                        FieldMultiX = 0.19;
+                        FieldMultiY = 0.19;
+                        BeamMultiX = 0.16;
+                        BeamMultiY = 0.16;
+                        break;
+
+                    // 19 Degree ETC Source 4
+                    case "19":
+                        IntensityMulti = 288000;
+                        FieldMultiX = 0.31;
+                        FieldMultiY = 0.31;
+                        BeamMultiX = 0.27;
+                        BeamMultiY = 0.27;
+                        break;
+
+                    // 26 Degree ETC Source 4
+                    case "26":
+                        IntensityMulti = 159000;
+                        FieldMultiX = 0.45;
+                        FieldMultiY = 0.45;
+                        BeamMultiX = 0.33;
+                        BeamMultiY = 0.33;
+                        break;
+
+                    // 36 Degree ETC Source 4
+                    case "36":
+                        IntensityMulti = 82000;
+                        FieldMultiX = 0.63;
+                        FieldMultiY = 0.63;
+                        BeamMultiX = 0.45;
+                        BeamMultiY = 0.45;
+                        break;
+
+                    // 50 Degree ETC Source 4
+                    case "50":
+                        IntensityMulti = 34900;
+                        FieldMultiX = 0.95;
+                        FieldMultiY = 0.95;
+                        BeamMultiX = 0.6;
+                        BeamMultiY = 0.6;
+                        break;
+
+                    //26 Jr Degree ETC Source 4
+                    case "26jr":
+                        IntensityMulti = 92000;
+                        FieldMultiX = 0.46;
+                        FieldMultiY = 0.46;
+                        BeamMultiX = 0.3;
+                        BeamMultiY = 0.3;
+                        break;
+
+                    // 36jr Degree ETC Source 4
+                    case "36jr":
+                        IntensityMulti = 38000;
+                        FieldMultiX = 0.67;
+                        FieldMultiY = 0.67;
+                        BeamMultiX = 0.43;
+                        BeamMultiY = 0.43;
+                        break;
+
+                    // 50 jr Degree ETC Source 4
+                    case "50jr":
+                        IntensityMulti = 22000;
+                        FieldMultiX = 0.93;
+                        FieldMultiY = 0.93;
+                        BeamMultiX = 0.61;
+                        BeamMultiY = 0.61;
+                        break;
+
+                    // PAR VNSP Degree ETC Source 4
+                    case "VNSP":
+                        IntensityMulti = 330000;
+                        FieldMultiX = 0.31;
+                        FieldMultiY = 0.31;
+                        BeamMultiX = 0.17;
+                        BeamMultiY = 0.17;
+                        break;
+
+                    // PAR NSP Degree ETC Source 4
+                    case "NSP":
+                        IntensityMulti = 313000;
+                        FieldMultiX = 0.33;
+                        FieldMultiY = 0.33;
+                        BeamMultiX = 0.17;
+                        BeamMultiY = 0.17;
+                        break;
+
+                    // PAR MFL Degree ETC Source 4
+                    case "MFL":
+                        IntensityMulti = 157000;
+                        FieldMultiX = 0.55;
+                        FieldMultiY = 0.39;
+                        BeamMultiX = 0.32;
+                        BeamMultiY = 0.21;
+                        break;
+
+                    // PAR WFL Degree ETC Source 4
+                    case "WFL":
+                        IntensityMulti = 63600;
+                        FieldMultiX = 0.87;
+                        FieldMultiY = 0.57;
+                        BeamMultiX = 0.48;
+                        BeamMultiY = 0.3;
+                        break;
+
+                    // PARnel Full Spot Degree ETC Source 4
+                    case "Spot":
+                        IntensityMulti = 174000;
+                        FieldMultiX = 0.41;
+                        FieldMultiY = 0.41;
+                        BeamMultiX = 0.19;
+                        BeamMultiY = 0.19;
+                        break;
+
+                    // PARnel Full Flood Degree ETC Source 4
+                    case "Flood":
+                        IntensityMulti = 43100;
+                        FieldMultiX = 0.78;
+                        FieldMultiY = 0.78;
+                        BeamMultiX = 0.45;
+                        BeamMultiY = 0.45;
+                        break;
+
+                    //Default
+                    default :
+                        IntensityMulti = 0;
+                        FieldMultiX = 0;
+                        FieldMultiY = 0;
+                        BeamMultiX = 0;
+                        BeamMultiY = 0;
+                }
+            }
+
+            function intensity()
+            //Pre: Distance is a valid int, and not equal to 0
+            //Post: Sets Form.intensity to intensity for given lamp and fixture
+            {
+                var temp;
+                //Check distance for equals 0
+                if (Dist == 0) {
+                    document.BeamForm.Intensity.value = 0;
+                }
+
+                temp = Dist * Dist;
+
+                //Grab new values
+                Dist = document.BeamForm.Dist.value;
+                Lamp = document.BeamForm.Lamp.value;
+                //Calculate intensity
+                document.BeamForm.Intensity.value = ((IntensityMulti / temp) * Lamp);
+            }
+
+
+            function fieldX() {
+                document.BeamForm.FieldDiamX.value = (Dist * FieldMultiX);
+            }
+
+            function fieldY() {
+                document.BeamForm.FieldDiamY.value = (Dist * FieldMultiY);
+            }
+
+            function beamX() {
+                document.BeamForm.BeamDiamX.value = (Dist * BeamMultiX);
+            }
+
+            function beamY() {
+                document.BeamForm.BeamDiamY.value = (Dist * BeamMultiY);
+            }
+
+
+        }
+
+    </script>
+
+    <style type="text/css">
+        <!--
+        .style1 {
+            font-size: 12px
+        }
+
+        .style2 {
+            font-size: x-large
+        }
+
+        .style3 {
+            font-size: medium;
+        }
+
+        -->
+    </style>
+
+    <noscript>
+        <div style="color: red">
+            <h2> This page requires javascript.</h2>
+
+            It appears that your browser either does not support JavaScript or you have disabled it. Without
+            JavaScript, the form for the calculator is shown but none of the calculations will be performed.
+        </div>
+    </noscript>
+
+</head>
+
+<body onload="javascript:defaultStuff()" data-gr-c-s-loaded="true">
+
+<h1 align="center" class="style2">Beam Analyzer</h1>
+<h3 align="center" class="style3"><em>The form will calulate the size of the field and beam diameter for that fixture at
+    that distance. <br>It will also give you an estimated intensity in footcandles for that fixture at that distance
+    with that lamp.</em></h3>
+
+<form name="BeamForm">
+    <div align="center">
+        <table border="0">
+            <tbody>
+            <tr>
+                <!-- <tbody colspan="3">
+              <td align="left" colspan="3"><p><strong>How to use sheet:</strong></p>
+                <p class="style3">1) Select what fixture you want to use</p>
+                <p class="style3">2) Select what lamp will be in that fixture</p>
+                <p class="style3">3) Know the distance that the fixture will be from the object it is illuminating</p>
+                </tbody> -->
+
+            </tr>
+            <tr>
+                <td height="350" colspan="3" align="center">
+                    <h2>Data Input</h2>
+                    <table border="1">
+                        <tbody>
+                        <tr>
+                            <td width="400" height="75">
+                                <div align="center">Fixture Type:<br>
+                                    <select name="Fixture" size="1" onchange="javascript:calculate()">
+                                        <option value="5">Source 4 5 Degree</option>
+                                        <option value="10">Source 4 10 Degree</option>
+                                        <option value="19">Source 4 19 Degree</option>
+                                        <option value="26">Source 4 26 Degree</option>
+                                        <option value="36">Source 4 36 Degree</option>
+                                        <option value="50">Source 4 50 Degree</option>
+                                        <option value="26jr">Source 4 Jr 26 Degree</option>
+                                        <option value="36jr">Source 4 Jr 36 Degree</option>
+                                        <option value="50jr">Source 4 Jr 50 Degree</option>
+                                        <option value="VNSP">Source 4 EA Par VNSP</option>
+                                        <option value="NSP">Source 4 EA Par NSP</option>
+                                        <option value="MFL">Source 4 EA Par MFL</option>
+                                        <option value="WFL">Source 4 EA Par WFL</option>
+                                        <option value="Spot">Source 4 PARnel - Full Spot</option>
+                                        <option value="Flood">Source 4 PARnel - Full Flood</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="400" height="75">
+                                <div align="center">Lamp Type:<br>
+                                    <select name="Lamp" size="1" onchange="javascript:calculate()">
+                                        <option value=".87">HPL 575</option>
+                                        <option value=".66">HPL 575 -X</option>
+                                        <option value="1">HPL 750</option>
+                                        <option value=".76">HPL 750-X</option>
+                                        <option value=".55">HPL 375</option>
+                                        <option value=".43">HPL 375-X</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="400" height="75">
+                                <div align="center">Distance from fixture to object (in feet):
+                                    <input name="Dist" type="text" onchange="javascript:calculate()" size="10">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" height="5"><input type="button" value="Calculate"
+                                                                 onclick="javascript:calculate()"></td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr colspan="3">
+                <td align="center" height="300"><h2>Calculations</h2>
+                    <table border="1">
+                        <tbody>
+                        <tr colspan="3">
+                            <th>Intensity</th>
+                            <th>Field Diameter</th>
+                            <th>Beam Diameter</th>
+                        </tr>
+                        <tr colspan="3">
+                            <td align="center">
+                                <div align="center">
+                                    <p>Intensity:
+                                        <input name="Intensity" type="text" id="Intensity" size="8" maxlength="5">&nbsp;fc
+                                    </p>
+                                    <p><em>100 fc is a good reference base for stage intensity</em></p>
+                                    <p><em>45 fc is a good reference base for houselight intensity</em></p>
+                                </div>
+                            </td>
+                            <td align="center">
+                                Field Diameter X:
+                                <input name="FieldDiamX" type="text" id="FieldDiamX" value="" size="5">&nbsp;ft<br><br>
+                                Field Diameter Y:
+                                <input name="FieldDiamY" type="text" id="FieldDiamY" size="5" maxlength="5">&nbsp;ft
+                                <p><em>Field size radius is measured from the Center of the beam to 0% intensity</em>
+                                </p>
+                            </td>
+                            <td align="center" height="200">
+                                <p>Beam Diameter X:
+                                    <input name="BeamDiamX" type="text" id="BeamDiamX" size="5"
+                                           maxlength="5">&nbsp;ft<br><br>
+                                    Beam Diameter Y:
+                                    <input name="BeamDiamY" type="text" id="BeamDiamY" size="5" maxlength="5">&nbsp;ft
+                                </p>
+                                <p><em>Beam size radius is measured from the Center of beam to 50% intensity</em></p>
+                                <p><em>Beam size diameter is a good estimator for gobo image size</em>&nbsp;</p>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+
+
+            </tbody>
+        </table>
+        <p><br>
+        </p>
+    </div>
+</form>
+<span style="margin: 0px auto; border: 2px dotted rgb(255, 165, 0); position: absolute; z-index: 2147483647; visibility: hidden; left: 919px; width: 0px; top: 171px; height: 0px;"></span><span
+        style="z-index: 2147483647; position: absolute; visibility: hidden; left: 904px; width: 50px; top: 156px; height: 20px; font-size: 10px; color: black;"></span>
+</body>
+<div>
+    <div class="gr_-editor gr-iframe-first-load" style="display: none;">
+        <div class="gr_-editor_back"></div>
+        <iframe class="gr_-ifr gr-_dialog-content" src="./Beam Calculator_files/saved_resource.html"></iframe>
+    </div>
+</div>
+<span class="gr__tooltip"><span class="gr__tooltip-content"></span><i class="gr__tooltip-logo"></i><span
+        class="gr__triangle"></span></span></html>
